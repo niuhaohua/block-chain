@@ -1,0 +1,18 @@
+{
+    "tx_id": "1a4a0a5045d3a0e0528a22aac3b3b8f1aa6a8e0d4744b06f2037b41cb36aeba3",
+    "instantiate": false,
+    "channel_id": "mychannel",
+    "chaincode_id": "p2pcc",
+    "timestamp": 1531445738000,
+    "creator_msp_id": "Org1MSP",
+    //背书策略
+    "endorsements": ["Org1MSP", "Org1MSP"],
+    //读写集
+    "write_set": [{
+        "key": "RequestM:Fri Jul 13 09:35:38 CST 2018",
+        "is_delete": false,
+        "value": "{\"reqTid\":\"Fri Jul 13 09:35:38 CST 2018\",\"reqTime\":\"20180606120000\",\"reqType\":\"1\",\"reqInfo\":\"1\",\"resInfo\":\"\",\"merchant\":\"com\",\"dataSource\":\"ccx\",\"expense\":9,\"fee\":1,\"state\":3}"
+    }],
+    //交易参数
+    "params": ["4.0", "R", "merchantTask", "Fri Jul 13 09:35:38 CST 2018", "20180606120000", "1", "1", "com", "ccx", "9", "1"]
+}
