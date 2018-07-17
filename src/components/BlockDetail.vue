@@ -7,13 +7,15 @@
       <div class="row">
         <div class="transaction_info border_box">
           <div class="info_title">
-            detail
+            区块详情
             </div>
               <div>
-                <el-table :data="tableData2" :row-class-name="tableRowClassName">
-                  <el-table-column prop="tx_id" label="txid"></el-table-column>
-                  <el-table-column prop="timestamp" label="timestamp" width="125"></el-table-column>
-                  <el-table-column prop="chaincode_id" label="type" width="100"></el-table-column>
+                <el-table :data="tableData2" :row-class-name="tableRowClassName" border>
+                  <el-table-column prop="block_id" label="区块ID"></el-table-column>
+                  <el-table-column prop="data_count" label="交易数量" width="125"></el-table-column>
+                  <el-table-column prop="txs" label="所有交易id数组"></el-table-column>
+                  <el-table-column prop="previous_hash" label="父区块哈希"></el-table-column>
+                  <el-table-column prop="data_hash" label="数据哈希"></el-table-column>
                 </el-table>
               </div>
         </div>
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+import { Loading } from 'element-ui';
 import store from '../vuex'
 export default {
   name: "BlockDetail",
@@ -50,6 +53,7 @@ export default {
       }
     },
     getBlockInfo:function(){
+      let loadingInstance = Loading.service()
       let blockNum
       let that = this
       if(this.$route.params.id){
@@ -58,10 +62,12 @@ export default {
       }else{
         blockNum = localStorage.getItem('blockNum')
       }
-      console.log(blockNum)
       this.$socket.emit('queryBlock', blockNum)
       this.$socket.on("blockInfo", function(val, type) {
+        loadingInstance.close()
         console.log(val,type)
+        if(type === 'ok')
+        that.tableData2 = val
       });
     } 
   },
@@ -69,6 +75,7 @@ export default {
  
   },
   mounted() {
+    
     localStorage.setItem('path','blockDetail')
     this.getBlockInfo()
   }

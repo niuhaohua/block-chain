@@ -159,7 +159,7 @@
           </el-form>
         </div>
         <div class="blocks_box">
-          <div ref="blocks_content" class="blocks_content" id="blocks_content" v-bind:style="{ marginLeft: marginLeft + 'px' }">
+          <div ref="blocks_content" class="blocks_content" id="blocks_content" v-bind:style="{ marginLeft: marginLeft + 'px'}">
              <transition  v-for="item in blocks" name="slide-fade">
                 <span v-if="item.show" class="block_item" >
                   <router-link  class="router-link" :to="{name:'BlockDetail',params:item}">
@@ -198,12 +198,15 @@
                       <a href="javascript:;" size="small"  @click="aaa(scope)" style="color:#409EFF">
                       {{scope.row.tx_id}}
                       </a>
-                     
                     </template>
                   </el-table-column>
                   <el-table-column prop="channel_id" label="通道ID" width="170"></el-table-column>
                   <el-table-column prop="chaincode_id" label="合约ID" width="170"></el-table-column>
-                  <el-table-column prop="timestamp" label="timestamp" width="170"></el-table-column>
+                  <el-table-column prop="timestamp" label="timestamp" width="170">
+                    <template scope="scope">
+                      {{scope.row.timestamp |  moment("YYYY-MM-DD HH:mm:ss")}}
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
         </div>
@@ -214,8 +217,8 @@
 </el-container>
 </div>
 </template>
-
 <script>
+import moment from 'vue-moment'
 import store from '../vuex'
 import { blockList } from '../vuex'
 export default {
@@ -229,8 +232,9 @@ export default {
     tableNode: [],
     blocks: [],
     marginLeft:0,
+    // width:0,
     dialogTableVisible:false,
-    info:[]
+    info:[],
   }),
   props: {
     msg: String
@@ -252,7 +256,6 @@ export default {
       this.$socket.emit('queryTrans', trans_id)
       this.$socket.on('transInfo', function (info, type) {
         that.info[0] = JSON.parse(info) 
-        console.log(that.info)
         that.dialogTableVisible = true
       })
       
@@ -262,11 +265,15 @@ export default {
       let that = this
       that.blocks = store.state.blockList
       this.$socket.on("blockHeight", function(val, type) {
+        if(type === 'err'){
+          return
+        }
         let obj = { id: val, show: false }
         store.state.blockList.push(obj)
         that.blocks = store.state.blockList
-        let left = that.$refs.blocks_content.style.marginLeft.split('px')[0]
-        if (( parseInt(left) + that.marginLeft) >= 930) {
+        let blocks_content = document.getElementById('blocks_content')
+        let width = blocks_content.offsetWidth + 98
+        if (( width + that.marginLeft) >= 930) {
           that.marginLeft = that.marginLeft - 400
         }
         let showFlag = setTimeout(() => {
@@ -296,7 +303,7 @@ export default {
     
   },
   activated(){
-  this.getBlockHeight()
+    this.getBlockHeight()
     this.getNodeInfo()
     this.getTransInfoAll()
   },
@@ -352,7 +359,7 @@ export default {
 }
 .blocks_box{
   width: 100%;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 .blocks_content{
   width: max-content;
