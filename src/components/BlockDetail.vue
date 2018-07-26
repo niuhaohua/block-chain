@@ -65,9 +65,11 @@ export default {
       this.$socket.emit('queryBlock', blockNum)
       this.$socket.on("blockInfo", function(val, type) {
         loadingInstance.close()
-        console.log(val,type)
-        if(type === 'ok')
-        that.tableData2 = val
+        that.tableData2 = []
+        if(type === 'ok'){
+          that.tableData2.push(JSON.parse(val))
+        }
+        
       });
     } 
   },

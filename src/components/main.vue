@@ -221,6 +221,7 @@
 import moment from 'vue-moment'
 import store from '../vuex'
 import { blockList } from '../vuex'
+import { Loading } from 'element-ui'
 export default {
   name: "Main",
   data: () => ({
@@ -251,11 +252,14 @@ export default {
       }
     },
     aaa: function(scope){
+      let loadingInstance = Loading.service()
       let that = this
       let trans_id = scope.row.tx_id
       this.$socket.emit('queryTrans', trans_id)
       this.$socket.on('transInfo', function (info, type) {
-        that.info[0] = JSON.parse(info) 
+        loadingInstance.close()
+        that.info = []
+        that.info.push(JSON.parse(info))
         that.dialogTableVisible = true
       })
       
@@ -297,7 +301,7 @@ export default {
       this.$socket.emit("getPeer")
       this.$socket.on("peers", function(val, type) {
         store.state.tableNode = JSON.parse(val)
-        this.tableNode = store.state.tableNode
+        that.tableNode = store.state.tableNode
       })
     }
     
@@ -313,9 +317,9 @@ export default {
       location.reload()
     }else{
       localStorage.setItem('path','main')
-    this.getBlockHeight()
     this.getNodeInfo()
     this.getTransInfoAll()
+    this.getBlockHeight() 
     }
     
   }
