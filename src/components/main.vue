@@ -3,7 +3,12 @@
 
   <div class="hello">
       <el-container>
-  <el-header  class="header">区块信息浏览</el-header>
+  <el-header  class="header" height="80">
+    <router-link  class="router-link" :to="{name:'Main'}">
+      <img src="logo_bai.png">
+    </router-link>
+    区块信息浏览
+    </el-header>
   <el-main class="main">
     <el-dialog title="交易详情" :visible.sync="dialogTableVisible">
 
@@ -348,7 +353,14 @@ export default {
   font-size: 22px;
   color: #fff;
   font-weight: 700;
-  line-height: 60px;
+  line-height: 80px;
+  position: relative;
+}
+.header img{
+  width: 200px;
+  position: absolute;
+  left: 50px;
+  top: -6px;
 }
 .content {
   width: 1100px;

@@ -1,7 +1,9 @@
 <template>
   <div class="hello">
       <el-container>
-  <el-header  class="header">detail</el-header>
+  <el-header height="80" class="header"><router-link  class="router-link" :to="{name:'Main'}">
+      <img src="logo_bai.png">
+    </router-link>detail</el-header>
   <el-main class="main">
     <div class="content">
       <div class="row">
@@ -101,11 +103,18 @@ export default {
   overflow: hidden;
 }
 .header {
-  background: #409eff;
+  background: #409EFF;
   font-size: 22px;
   color: #fff;
   font-weight: 700;
-  line-height: 60px;
+  line-height: 80px;
+  position: relative;
+}
+.header img{
+  width: 200px;
+  position: absolute;
+  left: 50px;
+  top: -6px;
 }
 .content {
   width: 1300px;
